@@ -29,7 +29,7 @@ class ControllerCategoria:
                     del x[i]
                     break
             print('categoria removida com sucesso')
-
+        #TODO: COLOCAR SEM CATEGORIA NO ESTOQUE
             with open('categoria.txt', 'w') as arq:
                 for i in x:
                     arq.write(f'{i.categoria}\n')
@@ -44,6 +44,7 @@ class ControllerCategoria:
             if len(cat1) == 0:
                 x = list(map(lambda x: Categoria(categoriaAlterada) if(x.categoria == categoriaAlterar) else(x) , x))
                 print("operação efetuada com sucesso!")
+                #TODO: ALTERAR A CATEGORIA TAMBEM NO ESTOQUE
             else:
                 print("A acategoria para qual deseja alterar já existe")
         else:
@@ -52,8 +53,31 @@ class ControllerCategoria:
         with open('categoria.txt', 'w') as arq:
             for i in x:
                 arq.write(f'{i.categoria}\n')
-                print('awdtg')
 
+    def mostrarCategoria(self):
+        categorias = DaoCategoria.ler()
+        if len(categorias) == 0:
+            print('Nenhuma categoria foi cadastrada')
+        else:
+            for i in categorias:
+                print(f'Categoria: {i.categoria}')
 
-a = ControllerCategoria()
-a.alterarCategoria('Verduras', 'Carnes')
+class ControllerEstoque:
+    def cadastrarProduto(self, nome, preco, categoria, quantidade):
+        x = DaoEstoque.ler()
+        y = DaoCategoria.ler()
+        h = list(filter(lambda x: x.categoria == categoria, y))
+        est = list(filter(lambda x: x.produto == nome, x))
+
+        if len(h)> 0:
+            if len(est) == 0:
+                produto = Produtos(nome, preco, categoria)
+                DaoEstoque.salvar(produto, quantidade)
+                print('produto cadastrado com sucesso')
+            else:
+                print('produto já existe em estoque')
+        else:
+            print('categoria inexistente')
+
+a = ControllerEstoque()
+a.cadastrarProduto('banana', '5', 'Verduras', 10)
