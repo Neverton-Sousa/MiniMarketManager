@@ -1,1 +1,1 @@
-banana|5|Verduras|10
+banana|5|5|4

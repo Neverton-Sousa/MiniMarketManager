@@ -79,5 +79,55 @@ class ControllerEstoque:
         else:
             print('categoria inexistente')
 
-a = ControllerEstoque()
-a.cadastrarProduto('banana', '5', 'Verduras', 10)
+    def mostrarEstoque(self):
+        estoque = DaoEstoque.ler()
+        if len(estoque) == 0:
+            print('Nenhum produto foi cadastrado')
+        else:
+            for i in estoque:
+                print(f"Nome: {i.produto.nome}\n"
+                      f"Preco: {i.produto.preco}\n"
+                      f"Categoria: {i.produto.categoria}\n"
+                      f"Quantidade: {i.quantidade}\n")
+
+
+class ControllerVenda:
+    def cadastrarVenda(self, nomeProduto, vendedor, comprador, quantidadeVendida):
+        x = DaoEstoque.ler()
+        temp=[]
+        exist= False
+        quant = False
+        for i in x:
+            if not exist:
+                if i.produto.nome == nomeProduto:
+                    exist = True
+                    if i.quantidade >= quantidadeVendida:
+                        quant = True
+                        i.quantidade = int(i.quantidade) - int (quantidadeVendida)
+
+                        vendido = Venda(Produtos(i.produto.nome, i.produto.preco, i.produto.preco), vendedor, comprador, quantidadeVendida)
+
+                        valorCompra = int(quantidadeVendida) * int(i.produto.preco)
+
+                        DaoVenda.salvar(vendido)
+            temp.append([Produtos(i.produto.nome, i.produto.preco, i.produto.preco), i.quantidade])   
+
+            arq = open('estoque.txt', 'w')
+            arq.write("")
+            for i in temp:
+                with open('estoque.txt', 'w') as arq:
+                    arq.write(f"{i[0].nome}|{i[0].preco}|{i[0].categoria}|{str(i[1])}\n")
+            
+            if exist == False:
+                print("O produto não existe")
+                return None
+            elif not quant:
+                print("A quantidade vendida não contem em estoque")
+            else:
+                print("Venda realizada com sucesso")
+                return valorCompra
+                                                      
+
+
+a = ControllerVenda()
+a.cadastrarVenda('banana', 'joão', 'caio', 1)
