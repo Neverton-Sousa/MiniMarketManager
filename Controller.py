@@ -96,13 +96,13 @@ class ControllerVenda:
         x = DaoEstoque.ler()
         temp=[]
         exist= False
-        quant = False
+        quantidade = False
         for i in x:
             if not exist:
                 if i.produto.nome == nomeProduto:
                     exist = True
                     if i.quantidade >= quantidadeVendida:
-                        quant = True
+                        quantidade = True
                         i.quantidade = int(i.quantidade) - int (quantidadeVendida)
 
                         vendido = Venda(Produtos(i.produto.nome, i.produto.preco, i.produto.preco), vendedor, comprador, quantidadeVendida)
@@ -110,24 +110,53 @@ class ControllerVenda:
                         valorCompra = int(quantidadeVendida) * int(i.produto.preco)
 
                         DaoVenda.salvar(vendido)
-            temp.append([Produtos(i.produto.nome, i.produto.preco, i.produto.preco), i.quantidade])   
+            temp.append(Estoque(Produtos(i.produto.nome, i.produto.preco, i.produto.categoria), i.quantidade))   
 
-            arq = open('estoque.txt', 'w')
-            arq.write("")
-            for i in temp:
-                with open('estoque.txt', 'w') as arq:
-                    arq.write(f"{i[0].nome}|{i[0].preco}|{i[0].categoria}|{str(i[1])}\n")
-            
-            if exist == False:
-                print("O produto não existe")
-                return None
-            elif not quant:
-                print("A quantidade vendida não contem em estoque")
+        arq = open('estoque.txt', 'w')
+        arq.write("")
+
+        for i in temp:
+            with open('estoque.txt', 'a') as arq:
+                arq.write(f"{i.produto.nome}|{i.produto.preco}|{i.produto.categoria}|{str(i.quantidade)}\n")
+        
+        if exist == False:
+            print("O produto não existe")
+            return None
+        elif not quantidade:
+            print("A quantidade vendida não contem em estoque")
+        else:
+            print("Venda realizada com sucesso")
+            return valorCompra
+
+    def relatorioProdutos(self):
+        vendas = DaoVenda.ler()
+        produtos=[]
+        for i in vendas:
+            nome = i.itensVendido.nome 
+            quantidade = i.quantidadeVendida
+            tamanho = list(filter(lambda x: x['produto'] == nome, produtos))
+            if len(tamanho) > 0:
+                produtos = list(map(lambda x: {'produto': nome, 'quantidade': int(x['quantidade']) + int(quantidade)}
+                                if (x['produto'] == nome) else(x), produtos))
             else:
-                print("Venda realizada com sucesso")
-                return valorCompra
-                                                      
+                produtos.append({'produto': nome, 'quantidade': int(quantidade)})
+
+        ordenado = sorted(produtos, key=lambda k: k['quantidade'], reverse=True)
+
+        print('esses são os produtos mais vendidos')
+        a=1
+        for i in ordenado:
+            print(f'==========Produto [{a}]===============')
+            print(f"Produto: {i['produto']}\n"
+                    f"Quantidade: {i['quantidade']}\n")
+            a+=1
 
 
 a = ControllerVenda()
-a.cadastrarVenda('banana', 'joão', 'caio', 1)
+a.relatorioProdutos()
+# a = ControllerVenda()
+# a.cadastrarVenda('maca', 'joão', 'caio', 1)
+
+
+# a = ControllerEstoque()
+# a.cadastrarProduto('maca',10,'Frutas',5)

@@ -1,3 +1,8 @@
 banana|5|frutas|caio|marcos|3|29/08/2024
 banana|5|5|joão|caio|5|05/09/2024
 banana|5|5|joão|caio|1|05/09/2024
+banana|5|5|joão|caio|1|09/09/2024
+banana|10|10|joão|caio|1|09/09/2024
+banana|10|10|joão|caio|1|09/09/2024
+maca|10|10|joão|caio|1|09/09/2024
+maca|10|10|joão|caio|1|09/09/2024
