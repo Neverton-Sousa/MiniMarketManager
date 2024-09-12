@@ -60,7 +60,7 @@ class DaoFornecedor:
     @classmethod
     def salvar(cls, fornecedor: Fornecedor):
         with open('fornecedores.txt','a') as arq:
-            arq.write(f'{fornecedor.nome}|{fornecedor.cnpj}|{fornecedor.contato}|{fornecedor.categoria}\n')
+            arq.write(f'{fornecedor.nome}|{fornecedor.cnpj}|{fornecedor.telefone}|{fornecedor.categoria}\n')
             
     @classmethod
     def ler(cls):

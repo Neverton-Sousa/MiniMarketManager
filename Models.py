@@ -27,10 +27,10 @@ class Venda:
         self.data = data
 
 class Fornecedor:
-    def __init__(self, nome, cnpj, contato, categoria):
+    def __init__(self, nome, cnpj, telefone, categoria):
         self.nome = nome
         self.cnpj = cnpj
-        self.contato = contato
+        self.telefone = telefone
         self.categoria = categoria
 
 
