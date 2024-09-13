@@ -1,3 +1,3 @@
-abacaxi|10|Frutas|5
-banana|10|Frutas|4
-maca|10|Frutas|3
+abacaxi|10|Sem categoria|5
+banana|10|Sem categoria|4
+maca|10|Sem categoria|3

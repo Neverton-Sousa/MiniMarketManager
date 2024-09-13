@@ -289,6 +289,15 @@ class ControllerCategoria:
                 for i in x:
                     arq.write(f'{i.categoria}\n')
 
+        estoque = DaoEstoque.ler()
+        estoque = list(map(lambda x: Estoque(Produtos(x.produto.nome, x.produto.preco, "Sem categoria"), x.quantidade)
+                        if (x.produto.categoria == categoriaRemover) else (x), estoque))
+        
+        with open("estoque.txt", "w") as arq:
+            for i in estoque:
+                arq.write(f'{i.produto.nome}|{i.produto.preco}|{i.produto.categoria}|{str(i.quantidade)}\n')
+
+
     def alterarCategoria(self, categoriarAlterar, categoriaAlterada):
         x = DaoCategoria.ler()
         cat = list(filter(lambda x: x.categoria == categoriarAlterar, x))
@@ -433,8 +442,8 @@ class ControllerFuncionario:
 
 
 
-a = ControllerVenda()
-a.mostrarVenda("05/09/2024", "09/09/2024")
+a = ControllerCategoria()
+a.removerCategoria("Frutas")
 
 
 
