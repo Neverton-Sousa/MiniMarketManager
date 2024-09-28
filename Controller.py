@@ -89,6 +89,10 @@ class ControllerEstoque:
                       f"Preco: {i.produto.preco}\n"
                       f"Categoria: {i.produto.categoria}\n"
                       f"Quantidade: {i.quantidade}\n")
+    
+    def removerProduto(self, nome):
+        x = DaoEstoque.ler()
+        
 
 
 class ControllerVenda:
